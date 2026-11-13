@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <mask id="perf">
+      <rect width="100" height="100" fill="#fff"/>
+      <g fill="#000">
+        <circle cx="10" cy="0" r="4.3"/><circle cx="26" cy="0" r="4.3"/><circle cx="42" cy="0" r="4.3"/><circle cx="58" cy="0" r="4.3"/><circle cx="74" cy="0" r="4.3"/><circle cx="90" cy="0" r="4.3"/>
+        <circle cx="10" cy="100" r="4.3"/><circle cx="26" cy="100" r="4.3"/><circle cx="42" cy="100" r="4.3"/><circle cx="58" cy="100" r="4.3"/><circle cx="74" cy="100" r="4.3"/><circle cx="90" cy="100" r="4.3"/>
+        <circle cx="0" cy="10" r="4.3"/><circle cx="0" cy="26" r="4.3"/><circle cx="0" cy="42" r="4.3"/><circle cx="0" cy="58" r="4.3"/><circle cx="0" cy="74" r="4.3"/><circle cx="0" cy="90" r="4.3"/>
+        <circle cx="100" cy="10" r="4.3"/><circle cx="100" cy="26" r="4.3"/><circle cx="100" cy="42" r="4.3"/><circle cx="100" cy="58" r="4.3"/><circle cx="100" cy="74" r="4.3"/><circle cx="100" cy="90" r="4.3"/>
+      </g>
+    </mask>
+  </defs>
+  <rect width="100" height="100" fill="#ffd21f" mask="url(#perf)"/>
+  <circle cx="50" cy="50" r="33" fill="#9c1212"/>
+  <ellipse cx="40" cy="39" rx="3.5" ry="5.8" fill="#ffd21f"/>
+  <ellipse cx="60" cy="39" rx="3.5" ry="5.8" fill="#ffd21f"/>
+  <path d="M23.5 53.5C30 76 70 76 76.5 53.5 68 67.5 32 67.5 23.5 53.5Z" fill="#ffd21f" stroke="#ffd21f" stroke-width="2.4" stroke-linejoin="round"/>
+</svg>

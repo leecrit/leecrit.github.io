@@ -10,9 +10,11 @@
 <meta property="og:url" content="https://leecrit.github.io/">
 <meta property="og:title" content="Evgeny Losev — Game AI Interface Designer">
 <meta property="og:description" content="Game interfaces for Mobile, PC and console: UX, visual style, icons, animation and in-game integration.">
-<meta property="og:image" content="https://leecrit.github.io/assets/best/2g.jpg">
+<meta property="og:image" content="https://leecrit.github.io/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="assets/logo.jpg">
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -39,8 +41,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
 .nav{position:fixed;top:0;left:0;right:0;z-index:40;background:var(--bg)}
 .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
 .brand{display:flex;align-items:center;gap:12px;font-family:var(--fh);font-weight:var(--hw);letter-spacing:.04em;font-size:calc(12px*var(--hk))}
-.mini{width:32px;height:32px;overflow:hidden;flex:none}
-.mini img{width:100%;height:100%;object-fit:cover;transform:scale(1.8)}
+.mini{width:34px;height:34px;flex:none}
+.mini svg{width:100%;height:100%;display:block}
 .menu{display:flex;align-items:center;gap:28px;font-size:14px;font-weight:600;color:var(--mute)}
 .menu a.l{transition:color .2s}.menu a.l:hover,.menu a.l.on{color:var(--yellow)}
 .lang{display:flex;font-size:12px;font-weight:700;gap:10px}
@@ -72,7 +74,7 @@ main,.end{position:relative;z-index:1}
 .hero .wrap{position:relative;z-index:1;padding:clamp(22px,3vw,36px) 0 clamp(36px,5vw,64px)}
 .id{display:grid;grid-template-columns:auto auto 1fr;gap:clamp(16px,2vw,26px);align-items:center;margin-bottom:clamp(20px,2.6vw,30px)}
 .ava{width:clamp(76px,7vw,100px);flex:none}
-.stamp{position:relative;aspect-ratio:1;background:var(--yellow);padding:9%;transform:rotate(-3deg);transition:transform .5s var(--ease)}
+.stamp{position:relative;aspect-ratio:1;background:var(--yellow);padding:10%;transform:rotate(-3deg);transition:transform .5s var(--ease)}
 .ava:hover .stamp{transform:rotate(0) scale(1.03)}
 .stamp img{width:100%;height:100%;object-fit:cover;display:block}
 h1{font-family:var(--fh);font-size:calc(clamp(24px,3vw,40px)*var(--hk));font-weight:var(--hw);line-height:1.05;letter-spacing:var(--hls);text-transform:uppercase}
@@ -239,7 +241,7 @@ footer{padding:26px 0 40px;color:var(--dim);font-size:13px}
 
 <div class="spot" id="spot"></div>
 <nav class="nav"><div class="wrap">
-  <a href="#home" class="brand"><span class="mini"><img src="assets/logo.jpg" alt=""></span>LEECRIT DESIGN</a>
+  <a href="#home" class="brand"><span class="mini"><svg viewBox="0 0 100 100" aria-hidden="true"><defs><mask id="lgm"><rect width="100" height="100" fill="#fff"/><g fill="#000" id="lgh"></g></mask></defs><rect width="100" height="100" fill="#ffd21f" mask="url(#lgm)"/><circle cx="50" cy="50" r="33" fill="#9c1212"/><ellipse cx="40" cy="39" rx="3.5" ry="5.8" fill="#ffd21f"/><ellipse cx="60" cy="39" rx="3.5" ry="5.8" fill="#ffd21f"/><path d="M23.5 53.5C30 76 70 76 76.5 53.5 68 67.5 32 67.5 23.5 53.5Z" fill="#ffd21f" stroke="#ffd21f" stroke-width="2.4" stroke-linejoin="round"/></svg></span>LEECRIT DESIGN</a>
   <div class="menu">
     <a class="l" href="#work" data-ru="Проекты" data-en="Projects"></a>
     <a class="l" href="#shots" data-ru="Экраны" data-en="Screens"></a>
@@ -511,7 +513,9 @@ grid.addEventListener("keydown", e => { const c = $$(".pc", grid), i = c.indexOf
   const d = {ArrowRight:1, ArrowDown:1, ArrowLeft:-1, ArrowUp:-1}[e.key]; if(!d) return; e.preventDefault(); c[(i + d + c.length) % c.length].focus(); });
 
 /* ====== STAMP EDGE (перфорация как у логотипа) ====== */
-(function(){ let c = ""; for(let i=0;i<9;i++){ const p = 5.55 + 11.1*i; c += `<circle cx='${p}' cy='0' r='3.4'/><circle cx='${p}' cy='100' r='3.4'/><circle cx='0' cy='${p}' r='3.4'/><circle cx='100' cy='${p}' r='3.4'/>`; }
+/* геометрия та же, что в assets/logo.svg: 6 вырезов на сторону, углы ровные */
+(function(){ let c = ""; for(let i=0;i<6;i++){ const p = 10 + 16*i; c += `<circle cx='${p}' cy='0' r='4.3'/><circle cx='${p}' cy='100' r='4.3'/><circle cx='0' cy='${p}' r='4.3'/><circle cx='100' cy='${p}' r='4.3'/>`; }
+  $("#lgh").innerHTML = c.replace(/'/g, '"');
   const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'><defs><mask id='m'><rect width='100' height='100' fill='white'/><g fill='black'>${c}</g></mask></defs><rect width='100' height='100' mask='url(#m)'/></svg>`;
   const url = `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
   $$(".stamp").forEach(s => { s.style.webkitMaskImage = url; s.style.maskImage = url; s.style.webkitMaskSize = s.style.maskSize = "100% 100%"; });

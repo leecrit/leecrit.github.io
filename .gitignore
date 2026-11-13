@@ -1,0 +1,9 @@
+# не публикуются: старая версия, локальный сервер, неиспользуемая графика
+index-old.html
+serve.ps1
+assets/misc/
+assets/hero-bg.jpg
+assets/footer-bg.jpg
+assets/sparks.jpg
+assets/divider.jpg
+assets/portrait-full.jpg

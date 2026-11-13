@@ -1,0 +1,614 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LEECRIT DESIGN — Евгений Лосев, Game AI Interface Designer</title>
+<meta name="description" content="Портфолио Евгения Лосева, Game AI Interface Designer, end-to-end. Игровые интерфейсы для Mobile, PC и консолей: от UX до стиля, иконок, анимаций и внедрения в игру.">
+<!-- превью ссылки в соцсетях: адреса полные, LinkedIn не принимает относительные пути -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://leecrit.github.io/">
+<meta property="og:title" content="Evgeny Losev — Game AI Interface Designer">
+<meta property="og:description" content="Game interfaces for Mobile, PC and console: UX, visual style, icons, animation and in-game integration.">
+<meta property="og:image" content="https://leecrit.github.io/assets/best/2g.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/logo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e0a0b; --panel:#171112; --panel2:#201618; --line:#2c2023;
+  --text:#ece5dd; --mute:#9d918c; --dim:#8a7d77;
+  --yellow:#ffd21f; --ember:#ff5a1f; --burg:#4a0d18;
+  --fh:'Oswald','Onest',system-ui,sans-serif; --fb:'Onest',system-ui,'Segoe UI',Arial,sans-serif;
+  --hw:700; --hls:.01em; --hk:1.22;
+  --ease:cubic-bezier(.2,.7,.2,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:16px;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img,video{display:block;max-width:100%}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-align:left}
+::selection{background:var(--yellow);color:#1a0d00}
+:focus-visible{outline:2px solid var(--yellow);outline-offset:4px}
+.wrap{width:min(1200px,100% - 64px);margin-inline:auto}
+
+/* top bar */
+.nav{position:fixed;top:0;left:0;right:0;z-index:40;background:var(--bg)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.brand{display:flex;align-items:center;gap:12px;font-family:var(--fh);font-weight:var(--hw);letter-spacing:.04em;font-size:calc(12px*var(--hk))}
+.mini{width:32px;height:32px;overflow:hidden;flex:none}
+.mini img{width:100%;height:100%;object-fit:cover;transform:scale(1.8)}
+.menu{display:flex;align-items:center;gap:28px;font-size:14px;font-weight:600;color:var(--mute)}
+.menu a.l{transition:color .2s}.menu a.l:hover,.menu a.l.on{color:var(--yellow)}
+.lang{display:flex;font-size:12px;font-weight:700;gap:10px}
+.lang button{color:var(--dim)}.lang button.on{color:var(--text)}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:11px 22px;background:var(--yellow);color:#1a0d00;font-weight:700;font-size:14px;transition:transform .2s var(--ease),background .2s}
+.btn:hover{background:#ffe25c;transform:translateY(-2px)}
+.btn.ghost{background:var(--panel2);color:var(--text)}.btn.ghost:hover{background:#2b1d20}
+
+/* hero: компактная строка «кто я» и крупный экран с работами */
+/* фон без картинок: тлеющее свечение снизу, рисуется градиентами */
+.hero{position:relative;z-index:1;margin-top:64px;overflow:hidden;background:
+  radial-gradient(ellipse 55% 50% at 50% 56%,rgba(150,24,34,.38),transparent 72%)}
+main,.end{position:relative;z-index:1}
+/* точки проявляются вокруг курсора по всему сайту; лежат под контентом */
+.spot{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .5s;
+  background:radial-gradient(circle,rgba(255,120,50,.95) 1.1px,transparent 1.6px) 0 0/14px 14px;
+  -webkit-mask-image:radial-gradient(circle 280px at var(--mx,50%) var(--my,50%),#000 0%,rgba(0,0,0,.35) 45%,transparent 100%);
+  mask-image:radial-gradient(circle 280px at var(--mx,50%) var(--my,50%),#000 0%,rgba(0,0,0,.35) 45%,transparent 100%)}
+.spot.on{opacity:.6}
+#embers{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+/* подсветка: размытая копия текущего слайда красит фон шапки */
+.amb{position:absolute;inset:0;background:center/cover no-repeat;filter:blur(60px) saturate(1.5);opacity:0;transition:opacity 1.4s ease;pointer-events:none;
+  /* растр из точек вместо сплошной заливки: цвет читается чётко и гаснет к краям шапки */
+  -webkit-mask-image:radial-gradient(circle,#000 1.1px,transparent 1.6px),radial-gradient(ellipse 62% 62% at 50% 54%,#000 35%,transparent 100%);
+  mask-image:radial-gradient(circle,#000 1.1px,transparent 1.6px),radial-gradient(ellipse 62% 62% at 50% 54%,#000 35%,transparent 100%);
+  -webkit-mask-size:14px 14px,100% 100%;mask-size:14px 14px,100% 100%;
+  -webkit-mask-composite:source-in;mask-composite:intersect}
+.amb.on{opacity:.55}
+.hero .wrap{position:relative;z-index:1;padding:clamp(22px,3vw,36px) 0 clamp(36px,5vw,64px)}
+.id{display:grid;grid-template-columns:auto auto 1fr;gap:clamp(16px,2vw,26px);align-items:center;margin-bottom:clamp(20px,2.6vw,30px)}
+.ava{width:clamp(76px,7vw,100px);flex:none}
+.stamp{position:relative;aspect-ratio:1;background:var(--yellow);padding:9%;transform:rotate(-3deg);transition:transform .5s var(--ease)}
+.ava:hover .stamp{transform:rotate(0) scale(1.03)}
+.stamp img{width:100%;height:100%;object-fit:cover;display:block}
+h1{font-family:var(--fh);font-size:calc(clamp(24px,3vw,40px)*var(--hk));font-weight:var(--hw);line-height:1.05;letter-spacing:var(--hls);text-transform:uppercase}
+.role{font-size:clamp(14px,1.3vw,17px);font-weight:600;margin-top:8px;color:var(--yellow)}
+.role span{color:var(--mute);font-weight:500}
+.pitch{color:#d9c9c2;max-width:44ch;justify-self:end;font-size:clamp(14px,1.2vw,17px);line-height:1.5}
+.in1{opacity:0;animation:up .8s var(--ease) forwards}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.hs{width:min(100% - 128px,max(560px,calc((100svh - 330px)*16/9)));margin-inline:auto}
+.sw{position:relative}
+.harr{position:absolute;top:50%;margin-top:-26px;width:52px;height:52px;display:grid;place-items:center;background:rgba(32,22,24,.8);color:var(--text);z-index:3;transition:background .2s,color .2s}
+.harr:hover{background:var(--yellow);color:#1a0d00}
+.harr svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:square}
+.harr.l{left:-64px}.harr.r{right:-64px}
+.screen{position:relative;aspect-ratio:16/9;background:#0b0708;overflow:hidden;box-shadow:0 30px 60px rgba(0,0,0,.45)}
+.slide{position:absolute;inset:0;display:flex;gap:10px;justify-content:center;align-items:center;opacity:0;transform:scale(1.02);transition:opacity .9s ease,transform 5.5s ease-out;pointer-events:none}
+.slide.multi{padding:14px}
+.slide.on{opacity:1;transform:none;pointer-events:auto}
+.slide button{height:100%;min-width:0;flex:0 1 auto;display:flex;justify-content:center}
+.slide img,.slide video{height:100%;width:auto;max-width:100%;object-fit:contain}
+.slide:not(.multi) button,.slide:not(.multi) img{width:100%}
+/* полоса прогресса из сегментов вместо стрелок и точек */
+.segs{display:flex;gap:6px;margin-top:10px}
+.segs button{flex:1;height:18px;position:relative}
+.segs button::before,.segs i{content:"";position:absolute;left:0;top:7px;height:4px}
+.segs button::before{right:0;background:rgba(236,229,221,.2);transition:background .2s}
+.segs button:hover::before{background:rgba(236,229,221,.4)}
+.segs i{width:0;background:var(--yellow)}
+.segs .done i{width:100%}
+.segs .on i.run{width:100%;transition:width var(--dur,5s) linear}
+.segs .on.hold i{width:100%}
+.scap{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-top:6px;font-size:14px}
+.scap button{font-weight:600;color:#d9c9c2;transition:color .2s}.scap button:hover{color:var(--yellow)}
+.scap span{color:var(--mute);font-variant-numeric:tabular-nums}
+
+/* sections */
+section{padding:clamp(64px,8vw,112px) 0}
+section+section{padding-top:0}
+.shead{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:clamp(24px,3vw,36px)}
+h2{font-family:var(--fh);font-size:calc(clamp(20px,2vw,27px)*var(--hk));font-weight:var(--hw);line-height:1.15;letter-spacing:var(--hls)}
+.shead small{font-size:15px;font-weight:500;color:var(--mute)}
+.rv{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease);transition-delay:var(--d,0s)}
+.rv.in{opacity:1;transform:none}
+
+/* projects grid: все проекты видны сразу */
+.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:20px}
+.pc{grid-column:span 2;display:block;background:var(--panel);position:relative;transition:transform .35s var(--ease),background .3s}
+.pc.big,.pc:nth-child(n+6){grid-column:span 3}
+.pc::after{content:"";position:absolute;inset:0;border:2px solid var(--yellow);opacity:0;transition:opacity .2s;pointer-events:none}
+.pc:hover,.pc:focus-visible{transform:translateY(-4px);background:var(--panel2);outline:none}
+.pc:hover::after,.pc:focus-visible::after{opacity:1}
+.pc-img{aspect-ratio:2/1;overflow:hidden;background:#0b0708;display:flex;justify-content:center;align-items:center;gap:8px}
+.pc-img.multi{padding:12px}
+.pc-img img{width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease);pointer-events:none}
+.pc-img.multi img{width:auto;max-width:33%;min-width:0;object-fit:contain}
+.pc:hover .pc-img img{transform:scale(1.03)}
+.pc-b{display:grid;gap:2px;padding:16px 18px 18px}
+.pc-t{font-family:var(--fh);font-weight:var(--hw);letter-spacing:var(--hls);font-size:calc(15px*var(--hk));line-height:1.3;transition:color .2s}
+.pc.big .pc-t{font-size:calc(18px*var(--hk))}
+.pc:hover .pc-t,.pc:focus-visible .pc-t{color:var(--yellow)}
+.pc-s{color:var(--mute);font-size:14px}
+
+/* best single screens: ровные ряды */
+.best{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.best.port{grid-template-columns:repeat(4,1fr);margin-top:20px}
+.best .cap{font-size:13px;color:var(--mute);margin-top:8px;font-weight:500}
+.shot{display:block;width:100%;cursor:zoom-in;background:var(--panel);position:relative;overflow:hidden}
+.shot img,.shot video{width:100%;height:auto;transition:opacity .25s}
+.best .shot{aspect-ratio:16/9}
+.best.port .shot{aspect-ratio:9/16}
+.best .shot img{height:100%;object-fit:contain}
+.best .shot:hover img{opacity:.85}
+
+/* experience */
+.xp{background:var(--panel);margin-bottom:6px}
+.xp summary{list-style:none;display:grid;grid-template-columns:200px 1fr 1fr 24px;gap:20px;align-items:center;padding:18px 24px;cursor:pointer;transition:background .2s}
+.xp summary::-webkit-details-marker{display:none}
+.xp summary:hover{background:var(--panel2)}
+.xp .d{color:var(--mute);font-size:14px;font-variant-numeric:tabular-nums}
+.xp .c{font-weight:700;font-size:17px}
+.xp .r{color:var(--mute);font-size:15px}
+.xp .p{color:var(--yellow);font-weight:700;font-size:18px;transition:transform .3s var(--ease);text-align:center}
+.xp[open] .p{transform:rotate(45deg)}
+.xp .body{padding:2px 24px 22px 244px}
+.xp .ctx{color:var(--text);font-size:15px;margin-bottom:8px}
+.xp ul{list-style:none;color:var(--mute);font-size:15px;display:grid;gap:5px;max-width:78ch}
+.xp li{padding-left:18px;position:relative}
+.xp li::before{content:"";position:absolute;left:0;top:.68em;width:6px;height:6px;background:var(--dim)}
+
+/* about */
+.about{display:grid;grid-template-columns:1.2fr 1fr;gap:56px}
+.about .big{font-size:clamp(18px,1.7vw,22px);line-height:1.5}
+.about ul{list-style:none;margin-top:18px;display:grid;gap:10px;color:var(--mute)}
+.about li{padding-left:20px;position:relative}
+.about li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:7px;background:var(--yellow)}
+.blk{margin-bottom:26px}
+.lbl{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{padding:6px 12px;background:var(--panel2);font-size:14px;font-weight:500}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 20px;font-size:15px}.kv dt{color:var(--mute)}
+
+/* contact */
+/* свечение у нижнего края страницы: одно на контакты и подвал, без шва между ними */
+.end{background:linear-gradient(0deg,rgba(110,18,28,.22) 0%,transparent 85%)}
+.contact{position:relative;padding:0 0 clamp(60px,8vw,110px)}
+.contact .row{position:relative;background:rgba(23,17,18,.92);display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;padding:clamp(24px,4vw,44px)}
+.contact h2{margin:0}.contact p{color:var(--mute);margin-top:8px}
+.links{display:flex;gap:8px;flex-wrap:wrap}
+footer{padding:26px 0 40px;color:var(--dim);font-size:13px}
+
+/* project page */
+.page{position:fixed;inset:0;z-index:60;background:var(--bg);overflow-y:auto;display:none}
+.page.open{display:block;animation:pIn .4s var(--ease)}
+@keyframes pIn{from{opacity:0;transform:translateY(18px)}}
+.p-top{position:sticky;top:0;z-index:2;background:var(--bg)}
+.p-top .wrap{display:flex;justify-content:space-between;align-items:center;height:64px}
+.back{font-weight:600;font-size:14px;color:var(--mute);transition:color .2s}.back:hover{color:var(--yellow)}
+.p-nav{display:flex;gap:22px;font-weight:600;font-size:14px;color:var(--mute)}.p-nav button:hover{color:var(--yellow)}
+.p-head{padding:28px 0 40px;max-width:860px}
+.p-head h2{font-size:calc(clamp(28px,4vw,52px)*var(--hk));margin:6px 0 10px}
+.p-head .meta{color:var(--mute);font-weight:500}
+.p-head ul{list-style:none;margin:20px 0 24px;display:grid;gap:6px;font-size:17px}
+.p-head li{padding-left:20px;position:relative}
+.p-head li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:7px;background:var(--yellow)}
+.feed{display:grid;gap:20px;padding-bottom:70px}
+.feed .ports{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.feed .ports.three{grid-template-columns:repeat(3,1fr)}
+.p-end{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;background:var(--panel);padding:clamp(22px,3vw,36px);margin-bottom:70px}
+.p-end h3{font-family:var(--fh);font-weight:var(--hw);font-size:calc(20px*var(--hk));line-height:1.2}
+.p-end p{color:var(--mute);margin-top:4px}
+.feed{padding-bottom:28px!important}
+.sub{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-top:14px}
+.feed .cap{font-size:13px;color:var(--mute);padding-top:8px;display:block}
+
+/* lightbox */
+.lb{position:fixed;inset:0;z-index:80;background:rgba(8,5,6,.97);display:none;align-items:center;justify-content:center}
+.lb.open{display:flex;animation:lbIn .2s}@keyframes lbIn{from{opacity:0}}
+.lb img,.lb video{max-width:92vw;max-height:86vh}
+.lb .ctl{position:absolute;font-weight:600;font-size:14px;color:var(--mute);padding:14px 18px;transition:color .2s}
+.lb .ctl:hover{color:var(--yellow)}
+.lb .x{top:10px;right:14px}.lb .p{left:14px;bottom:8px}.lb .n{right:14px;bottom:8px}
+.lb .info{position:absolute;bottom:22px;left:0;right:0;text-align:center;font-size:13px;color:var(--mute);pointer-events:none}
+
+@media(max-width:900px){
+  .id{grid-template-columns:auto 1fr}.pitch{grid-column:1/-1;justify-self:start}
+  .hs{width:calc(100% - 128px)}
+  .grid{grid-template-columns:repeat(2,1fr)}.pc,.pc.big,.pc:nth-child(n+6){grid-column:span 1}
+  .about{grid-template-columns:1fr;gap:32px}.feed .ports,.feed .ports.three{grid-template-columns:repeat(2,1fr)}
+  .xp summary{grid-template-columns:1fr 24px;gap:2px 12px}.xp .d{grid-column:1;grid-row:1}.xp .c{grid-column:1}.xp .r{grid-column:1}.xp .p{grid-column:2;grid-row:1/4}
+  .xp .body{padding-left:24px}
+}
+@media(max-width:680px){
+  .wrap{width:calc(100% - 36px)}.menu a.l{display:none}.menu{gap:12px}
+  .brand,.nav .btn{white-space:nowrap}.brand{font-size:10px;gap:8px}.nav .btn{padding:9px 12px;font-size:13px}
+  .grid{grid-template-columns:1fr}
+  .best{grid-template-columns:1fr}.best.port{grid-template-columns:repeat(2,1fr)}
+  .scap span{display:none}
+  .hs{width:100%}.harr{width:40px;height:40px;margin-top:-20px}.harr.l{left:6px}.harr.r{right:6px}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv,.in1{opacity:1;transform:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<div class="spot" id="spot"></div>
+<nav class="nav"><div class="wrap">
+  <a href="#home" class="brand"><span class="mini"><img src="assets/logo.jpg" alt=""></span>LEECRIT DESIGN</a>
+  <div class="menu">
+    <a class="l" href="#work" data-ru="Проекты" data-en="Projects"></a>
+    <a class="l" href="#shots" data-ru="Экраны" data-en="Screens"></a>
+    <a class="l" href="#exp" data-ru="Опыт" data-en="Experience"></a>
+    <a class="l" href="#about" data-ru="Обо мне" data-en="About"></a>
+    <div class="lang"><button data-l="ru">RU</button><button data-l="en">EN</button></div>
+    <a class="btn" target="_blank" rel="noopener" href="https://t.me/leecrit">Telegram ↗</a>
+  </div>
+</div></nav>
+
+<header class="hero" id="home">
+  <div class="amb"></div><div class="amb"></div>
+  <canvas id="embers"></canvas>
+  <div class="wrap">
+    <div class="id in1">
+      <div class="ava"><div class="stamp"><img src="assets/portrait.jpg" alt="Evgeny Losev"></div></div>
+      <div>
+        <h1 data-ru="Евгений Лосев" data-en="Evgeny Losev"></h1>
+        <div class="role">Game AI Interface Designer, end-to-end <span data-ru="· Mobile · PC · консоли" data-en="· Mobile · PC · Console"></span></div>
+      </div>
+      <p class="pitch" data-ru="Закрываю весь пайплайн игрового интерфейса: от обсуждения и UX до стиля, иконок, анимаций и внедрения в игру." data-en="I cover the whole game interface pipeline: from discussion and UX to visual style, icons, animation and in-game integration."></p>
+    </div>
+    <div class="hs in1" style="animation-delay:.15s">
+      <div class="sw">
+        <button class="harr l" id="hPrev" aria-label="Prev"><svg viewBox="0 0 24 24"><path d="M15 4 7 12l8 8"/></svg></button>
+        <div class="screen" id="screen"></div>
+        <button class="harr r" id="hNext" aria-label="Next"><svg viewBox="0 0 24 24"><path d="m9 4 8 8-8 8"/></svg></button>
+      </div>
+      <div class="segs" id="segs"></div>
+      <div class="scap"><button id="scapT"></button><span id="scapN"></span></div>
+    </div>
+  </div>
+</header>
+
+<main>
+<section id="work"><div class="wrap">
+  <div class="shead rv"><h2 data-ru="Проекты" data-en="Projects"></h2><small>2023 — 2026</small></div>
+  <div class="grid rv" id="grid"></div>
+</div></section>
+
+<section id="shots"><div class="wrap">
+  <div class="shead rv"><h2 data-ru="Отдельные экраны" data-en="Single screens"></h2><small data-ru="тестовые, фриланс, концепты" data-en="test tasks, freelance, concepts"></small></div>
+  <div class="best rv" id="bestL"></div>
+  <div class="best port rv" id="bestP"></div>
+</div></section>
+
+<section id="exp"><div class="wrap">
+  <div class="shead rv"><h2 data-ru="Опыт работы" data-en="Work experience"></h2><small data-ru="игровые интерфейсы с 2021 года" data-en="game interfaces since 2021"></small></div>
+  <div id="xp" class="rv"></div>
+</div></section>
+
+<section id="about"><div class="wrap">
+  <div class="shead rv"><h2 data-ru="Обо мне" data-en="About"></h2></div>
+  <div class="about">
+    <div class="rv">
+      <p class="big" data-ru="Проектирую и рисую игровые интерфейсы с 2021 года: шутеры, стратегии, файтинг, симуляторы, карточные и казуальные игры." data-en="Designing and drawing game interfaces since 2021: shooters, strategy, fighting, simulators, card and casual games."></p>
+      <ul id="aboutL"></ul>
+    </div>
+    <div class="rv" style="--d:.1s">
+      <div class="blk"><div class="lbl" data-ru="Инструменты" data-en="Tools"></div><div class="chips"><span class="chip">Figma</span><span class="chip">Adobe Photoshop</span><span class="chip">Adobe After Effects</span><span class="chip">Claude</span></div></div>
+      <div class="blk"><div class="lbl" data-ru="Навыки" data-en="Skills"></div><div class="chips" id="skills"></div></div>
+      <div class="blk"><div class="lbl" data-ru="Коротко" data-en="Quick facts"></div>
+        <dl class="kv">
+          <dt data-ru="Платформы" data-en="Platforms"></dt><dd data-ru="Mobile · PC · консоли · Web" data-en="Mobile · PC · Console · Web"></dd>
+          <dt data-ru="Формат" data-en="Format"></dt><dd data-ru="Удалённо · готов к релокации" data-en="Remote · Nha Trang, Vietnam · open to relocation"></dd>
+          <dt data-ru="Языки" data-en="Languages"></dt><dd data-ru="Русский: родной · Английский: B2" data-en="Russian: native · English: B2"></dd>
+        </dl></div>
+    </div>
+  </div>
+</div></section>
+
+</main>
+<div class="end">
+<section class="contact" id="contact"><div class="wrap rv"><div class="row">
+  <div><h2 data-ru="Давайте работать вместе" data-en="Let's work together"></h2><p data-ru="Быстрее всего отвечаю в Telegram." data-en="Telegram is the fastest way to reach me."></p></div>
+  <div class="links"><a class="btn" target="_blank" rel="noopener" href="https://t.me/leecrit">Telegram @leecrit ↗</a><a class="btn ghost" href="mailto:evgeny.losev21@gmail.com">evgeny.losev21@gmail.com</a><span id="links" class="links"></span></div>
+</div></div></section>
+<footer><div class="wrap">© <span id="yr"></span> LEECRIT DESIGN · <span data-ru="Евгений Лосев" data-en="Evgeny Losev"></span></div></footer>
+</div>
+
+<div class="page" id="page">
+  <div class="p-top"><div class="wrap">
+    <button class="back" id="pBack">← <span data-ru="Все проекты" data-en="All projects"></span></button>
+    <div class="p-nav"><button id="pPrev">← <span data-ru="Предыдущий" data-en="Previous"></span></button><button id="pNext"><span data-ru="Следующий" data-en="Next"></span> →</button></div>
+  </div></div>
+  <div class="wrap" id="pBody"></div>
+</div>
+
+<div class="lb" id="lb"><button class="ctl x" data-ru="Закрыть ✕" data-en="Close ✕"></button><button class="ctl p" data-ru="← Назад" data-en="← Prev"></button><div id="lbm"></div><button class="ctl n" data-ru="Дальше →" data-en="Next →"></button><div class="info" id="lbi"></div></div>
+
+
+<script>
+/* ====== НАСТРОЙКИ: ссылки в контактах (пустые не показываются) ====== */
+const LINKS = {
+  ArtStation: "https://www.artstation.com/leecrit",
+  LinkedIn:   "https://www.linkedin.com/in/eugene-losev-121a732ab/",
+  Behance:    ""
+};
+
+/* Экран вверху. Кадр — ["путь в assets без .jpg" или "путь.mp4", id проекта или "shots"].
+   Горизонтальный кадр — один на слайд, вертикальные (телефон/видео) — по 2–3 в ряд. */
+const HERO = [
+  [["best/2g","shots"]],
+  [["best/1a","tanks"],["best/2a","tanks"],["best/3a","tanks"]],
+  [["tanks/general.mp4","tanks"],["tanks/chest.mp4","tanks"],["tanks/coin.mp4","tanks"]],
+  [["best/1c","hellstrike"]],
+  [["best/2c","hellstrike"]],
+  [["best/1g","shots"]],
+  [["best/1b","iba"],["best/2b","shots"],["best/3b","shots"]],
+  [["best/mobilehud","shots"]],
+  [["best/roguelike","shots"]]
+];
+
+/* ====== ПРОЕКТЫ (порядок = порядок на сайте; первые два крупные) ====== */
+const PROJECTS = [
+ {id:"tanks", n:7, o:"port", cover:[1,5,3], title:{ru:"Танки",en:"Tanks"}, studio:"Overmobile", year:"2026", plat:"Web · Mobile", role:"UI/UX Designer",
+  f:{ru:["Веб- и мобильно ориентированный военный гибрид-автобаттлер","Один отвечал за весь арт, UI и UX: база и добыча ресурсов, достижения, альбомы операций, трофеи","Около 20 UI-анимаций наград и событий"],
+     en:["Web- and mobile-oriented military auto-battler hybrid","Sole owner of all art, UI and UX: base and resource gathering, achievements, operation albums, trophies","About 20 UI animations for rewards and events"]},
+  videos:[["general",{ru:"Получение генерала",en:"General unlock"}],["chest",{ru:"Получение ящика",en:"Crate reward"}],["coin",{ru:"Найдена монета",en:"Coin found"}],["new",{ru:"Новый модуль",en:"New module"}],["idle",{ru:"Idle-анимация",en:"Idle loop"}]]},
+ {id:"hellstrike", n:8, o:"land", cover:5, title:"Hellstrike", studio:"GAN Studio", year:"2023 — 2024", plat:"Mobile", role:"UI/UX Designer",
+  f:{ru:["Интерфейс sci-fi мобильного шутера с нуля","Боевой HUD, карта миссии, лобби, арсенал, настройки","Визуальный стиль, ассеты и контроль их внедрения в Unity"],
+     en:["Sci-fi mobile shooter interface from scratch","Combat HUD, mission map, lobby, armory, settings","Visual style, assets and supervision of their integration in Unity"]}},
+ {id:"hoosegow", n:6, o:"land", cover:4, steam:"https://store.steampowered.com/app/4060640/Hoosegow_Prison_Survival/", title:"Hoosegow: Prison Survival", studio:"D.Dream Games", year:"2025 — 2026", plat:{ru:"PC · консоли",en:"PC · Console"}, role:"UX/UI Designer",
+  f:{ru:["Переработал около 30 экранов мобильного интерфейса под Desktop и консоли","UX и навигация под геймпад и клавиатуру с мышью","UI-ассеты и макеты для интеграции в движок"],
+     en:["Reworked about 30 screens of the mobile interface for Desktop and console","UX and navigation for gamepad and keyboard/mouse","UI assets and layouts for engine integration"]}},
+ {id:"card-world", n:8, o:"land", cover:1, title:"Card World", studio:"GAN Studio", year:"2023 — 2024", plat:"Mobile", role:"UI/UX Designer",
+  f:{ru:["Карточная игра, интерфейс и визуальный стиль с нуля; игра вышла","Игровое поле, квесты и крафт","Магазин, офферы, ежедневные награды, банк"],
+     en:["Card game, interface and visual style from scratch; the game was released","Play field, quests and crafting","Store, offers, daily rewards, bank"]}},
+ {id:"tiny-eden", n:5, o:"land", cover:1, steam:"https://store.steampowered.com/app/3375110/Tiny_Eden/", title:"Tiny Eden", studio:"Bajka Games", year:"2024 — 2025", plat:"PC", role:"UI Designer",
+  f:{ru:["Симулятор садовода для PC","Прототип интерфейса со своим визуальным стилем (в релизе другая версия интерфейса)","Около 8 экранов с состояниями и около 150 концептов иконок"],
+     en:["Gardening simulator for PC","Interface prototype with my own visual style (the released game uses a different interface)","About 8 screens with states and about 150 icon concepts"]}},
+ {id:"iba", n:7, o:"port", cover:[1,2,7], title:"IBA Boxing", studio:"IBA", year:"2025", plat:"Mobile · PC", role:"UI/UX Designer",
+  f:{ru:["Файтинг про бокс: визуальный стиль интерфейса с нуля","Около 10 основных экранов и 50+ иконок","10+ элементов UI-анимации в After Effects"],
+     en:["Boxing fighting game: interface visual style from scratch","About 10 core screens and 50+ icons","10+ UI animation elements in After Effects"]}},
+ {id:"trains", n:3, o:"land", cover:1, title:"Trains", studio:"GAN Studio", year:"2023 — 2024", plat:"Mobile", role:"UI/UX Designer",
+  f:{ru:["Симулятор поездов, интерфейс с нуля","Игровой HUD и диалоги подтверждения","Экраны победы и поражения"],
+     en:["Train simulator, interface from scratch","In-game HUD and confirmation dialogs","Victory and defeat screens"]}}
+];
+const BIG = 2;
+
+/* Лучшие отдельные экраны: [номер в assets/shots, тип подписи]. Горизонтальные и вертикальные отдельно. */
+const CAPS = {
+  wheel:{ru:"Колесо фортуны",en:"Lucky wheel"}, hud:{ru:"Mobile HUD",en:"Mobile HUD"},
+  popup:{ru:"Поп-ап обновления",en:"Update pop-up"}, win:{ru:"Экран победы",en:"Victory screen"}, map:{ru:"Карта рогалика",en:"Roguelike map"},
+  tg:{ru:"Telegram-игра",en:"Telegram game"}, lead:{ru:"Результаты и лидерборд",en:"Results & leaderboard"}
+};
+const BEST_L = [[16,"lead"],[4,"hud"],[13,"map"],[2,"wheel"]];
+const BEST_P = [[8,"popup"],[9,"win"],[3,"hud"],[14,"tg"]];
+
+/* Опыт: формулировки совпадают с резюме (templates/cv_ru.tex, cv_en.tex) */
+const XP = [
+ {co:"Overmobile", role:"UI/UX Designer", d:{ru:"Мар 2026 — Ноя 2026",en:"Mar 2026 — Nov 2026"},
+  ctx:{ru:"Веб- и мобильно ориентированный военный гибрид-автобаттлер. Удалённо.",en:"Web- and mobile-oriented military auto-battler hybrid. Remote."},
+  ru:["Один отвечал за весь арт, UI и UX в команде около 8 человек (4 геймдизайнера, 4 разработчика)","Выстроил пайплайн на нейросетях и Claude Code: ChatGPT, Figma, прототип, ревью, импорт в игру","За 8 месяцев: около 25 экранов и досок (база и добыча ресурсов, достижения, альбомы операций, трофеи), 100+ состояний, 60+ иконок, около 20 UI-анимаций"],
+  en:["Sole owner of all art, UI and UX in a team of about 8 (4 game designers, 4 developers)","Built a pipeline on neural networks and Claude Code: ChatGPT, Figma, prototype, review, in-game import","Over 8 months: about 25 screens and boards (base and resource gathering, achievements, operation albums, trophies), 100+ states, 60+ icons, about 20 UI animations"]},
+ {co:"D.Dream Games", role:"UX/UI Designer", d:{ru:"Сен 2025 — Янв 2026",en:"Sep 2025 — Jan 2026"},
+  ctx:{ru:"Hoosegow: Prison Survival, вышла в Steam (PC, консоли). Удалённо.",en:"Hoosegow: Prison Survival, released on Steam (PC, console). Remote."},
+  ru:["Один отвечал за интерфейс в команде из двух человек (вместе с геймдизайнером)","Переработал около 30 экранов под Desktop и консоли, со множеством состояний, и спроектировал интерфейсы под новые механики","Спроектировал UX и навигацию под геймпад и клавиатуру с мышью","Доработал общий визуальный стиль, подготовил UI-ассеты и макеты для интеграции в движок"],
+  en:["Sole owner of the interface in a team of two (with the game designer)","Reworked about 30 screens of the mobile interface for Desktop and console, with many states each, and designed interfaces for the new game mechanics","Designed UX and navigation for gamepad and keyboard/mouse input","Refined the overall visual style, prepared UI assets and layouts for engine integration"]},
+ {co:"IBA", role:"UI/UX Designer", d:{ru:"Мар 2025 — Июн 2025",en:"Mar 2025 — Jun 2025"},
+  ctx:{ru:"IBA Boxing Game: файтинг про бокс для PC и Mobile. Удалённо.",en:"IBA Boxing Game: boxing fighting game for PC and Mobile. Remote."},
+  ru:["Единственный художник в команде около 4 человек (геймдизайнер, 2 программиста): с нуля задал визуальный стиль интерфейса","Нарисовал около 10 основных экранов, 50+ иконок (одежда, кнопки и элементы UI) и 10+ элементов UI-анимации в After Effects","Сделал много вариантов прототипов под нетривиальные механики (бой и перемещение по городу)","Макеты экранов мобильной версии адаптировал под PC"],
+  en:["Sole artist in a team of about 4 (game designer, 2 programmers): set the interface visual style from scratch","Drew about 10 core screens, 50+ icons (clothing, buttons and UI elements) and 10+ UI animation elements in After Effects","Built many prototype variations for non-trivial mechanics (combat plus moving around the city)","Adapted the mobile screen layouts for the PC version"]},
+ {co:"Project Hive", role:"UI/UX Designer", d:{ru:"Сен 2024 — Фев 2025",en:"Sep 2024 — Feb 2025"},
+  ctx:{ru:"Sci-fi шутер для PC. Удалённо.",en:"Sci-fi shooter for PC. Remote."},
+  ru:["Проектировал и рисовал интерфейсы новых режимов игры (LiveOps): мини-игры и кастомные игры, около 20 экранов","Работал в готовом стиле в команде около 40 человек: геймдизайнеры, программисты, тестировщик"],
+  en:["Designed and drew interfaces for new game modes (LiveOps): mini-games and custom games, about 20 screens","Worked in an established style in a team of about 40: game designers, programmers, a tester"]},
+ {co:"Bajka Games", role:"UI Designer", d:{ru:"Сен 2024 — Янв 2025",en:"Sep 2024 — Jan 2025"},
+  ctx:{ru:"Tiny Eden, симулятор садовода, вышла в Steam. Удалённо, частичная занятость.",en:"Tiny Eden, gardening simulator, released on Steam. Remote, part-time."},
+  ru:["Спроектировал и нарисовал прототип интерфейса со своим визуальным стилем: около 8 экранов с состояниями и около 150 концептов иконок","Команда из двух геймдизайнеров; указан в титрах игры"],
+  en:["Designed and drew an interface prototype with my own visual style: about 8 screens with states and about 150 icon concepts","Team of two game designers; credited in the game"]},
+ {co:"GAN Studio", role:"UI/UX Designer", d:{ru:"Апр 2023 — Окт 2024",en:"Apr 2023 — Oct 2024"},
+  ctx:{ru:"Sci-fi мобильный шутер, симулятор поездов, карточная игра Card World (вышла). Удалённо.",en:"Sci-fi mobile shooter, train simulator, card game Card World (released). Remote."},
+  ru:["Задал визуальный стиль и сделал интерфейсы трёх игр с нуля: около 20 экранов и около 45 иконок","Готовил ассеты и следил за их внедрением в Unity; студия из 4-5 человек"],
+  en:["Set the visual style and built the interfaces of three games from scratch: about 20 screens and about 45 icons","Prepared assets and supervised their integration in Unity; studio of 4-5"]},
+ {co:{ru:"Частный проект",en:"Private project"}, role:"Junior UI Designer", d:{ru:"Апр 2021 — Июл 2023",en:"Apr 2021 — Jul 2023"},
+  ru:["Рисовал окна, иконки и кнопки для казуальных игр под руководством руководителя проекта; часть решений после доработки вошла в релизы"],
+  en:["Drew windows, icons and buttons for casual games under the project lead; some of my solutions shipped in releases after rework"]}
+];
+const ABOUT = {
+  ru:["Могу закрыть весь пайплайн интерфейса: от обсуждения и UX до стиля, иконок, анимаций и внедрения в игру","Выстроил AI-пайплайн интерфейсов на нейросетях и Claude Code: от картинки в ChatGPT до прототипа в Figma или Unity","Использую нейросети для концептов, иконок, рендеров и прототипов; арт-задачи закрываю сам"],
+  en:["Able to cover the whole interface pipeline: from discussion and UX to visual style, icons, animation and in-game integration","Built an AI-assisted interface pipeline on neural networks and Claude Code: from an image in ChatGPT to a prototype in Figma or Unity","Using neural networks for concepts, icons, renders and prototypes; closing interface art tasks on my own"]};
+const SKILLS = {ru:["Игровые интерфейсы","HUD","Иконки","Визуальный стиль","UI-кит","Прототипы","Навигация под геймпад","Адаптация под платформы","UI-анимация","LiveOps: события, офферы, окна наград"],
+                en:["Game interfaces","HUD","Icons","Visual style","UI kit","Prototyping","Gamepad navigation","Cross-platform adaptation","UI animation","LiveOps: events, offers, reward windows"]};
+
+/* ====== HELPERS ====== */
+let L = "ru";
+try{ L = localStorage.getItem("lang") || ((navigator.language||"ru").toLowerCase().startsWith("ru") ? "ru" : "en"); }catch(e){}
+const t = v => (v && typeof v === "object" && !Array.isArray(v)) ? v[L] : v;
+const $ = (s,r=document) => r.querySelector(s), $$ = (s,r=document) => [...r.querySelectorAll(s)];
+const pad = n => String(n).padStart(2,"0");
+const io = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } }), {threshold:.06});
+const pIdx = id => PROJECTS.findIndex(p => p.id === id);
+const pName = id => id === "shots" ? (L==="ru" ? "Отдельные экраны" : "Single screens") : t(PROJECTS[pIdx(id)].title);
+const goTo = id => id === "shots" ? $("#shots").scrollIntoView({behavior:"smooth"}) : openP(pIdx(id));
+let cp = -1, hs = 0;
+
+/* ====== RENDER (текст, зависящий от языка) ====== */
+function render(){
+  document.documentElement.lang = L;
+  $$("[data-ru]").forEach(e => e.innerHTML = e.dataset[L]);
+  $$(".lang button").forEach(b => b.classList.toggle("on", b.dataset.l === L));
+  $("#skills").innerHTML = SKILLS[L].map(s => `<span class="chip">${s}</span>`).join("");
+  $("#aboutL").innerHTML = ABOUT[L].map(s => `<li>${s}</li>`).join("");
+  $$("#grid .pc").forEach((b,i) => { const p = PROJECTS[i]; $(".pc-t",b).textContent = t(p.title); $(".pc-s",b).textContent = `${p.studio} · ${t(p.plat)} · ${p.year}`; });
+  $$("#bestL .cap").forEach((c,i) => c.textContent = t(CAPS[BEST_L[i][1]]));
+  $$("#bestP .cap").forEach((c,i) => c.textContent = t(CAPS[BEST_P[i][1]]));
+  $("#xp").innerHTML = XP.map((x,i) => `<details class="xp"${i?"":" open"}><summary><span class="d">${t(x.d)}</span><span class="c">${t(x.co)}</span><span class="r">${x.role}</span><span class="p">+</span></summary><div class="body">${x.ctx?`<div class="ctx">${t(x.ctx)}</div>`:""}<ul>${x[L].map(b=>`<li>${b}</li>`).join("")}</ul></div></details>`).join("");
+  $("#links").innerHTML = `<a class="btn ghost" target="_blank" rel="noopener" href="assets/Evgeny_Losev_CV_${L.toUpperCase()}.pdf">${L==="ru"?"Резюме PDF":"Resume PDF"} ↓</a>`
+    + Object.entries(LINKS).filter(([,u])=>u).map(([k,u]) => `<a class="btn ghost" target="_blank" rel="noopener" href="${u}">${k} ↗</a>`).join("");
+  $$(".rv:not(.in)").forEach(e => io.observe(e));
+  heroCap();
+  if(cp >= 0) openP(cp, true);
+}
+$$(".lang button").forEach(b => b.onclick = () => { L = b.dataset.l; try{localStorage.setItem("lang",L)}catch(e){} render(); });
+
+/* ====== HERO SCREEN ====== */
+let htimer, hover = false;
+const item = (f, multi) => f.endsWith(".mp4")
+  ? `<video muted loop playsinline preload="none" width="800" height="1422" data-src="assets/${f}"></video>`
+  : `<img src="assets/${f}${multi?"_t":""}.jpg" alt="" draggable="false">`;
+$("#screen").innerHTML = HERO.map(s => `<div class="slide${s.length>1?" multi":""}">${s.map(([f,id]) => `<button data-p="${id}">${item(f, s.length>1)}</button>`).join("")}</div>`).join("");
+$("#segs").innerHTML = HERO.map((_,i) => `<button aria-label="${i+1}"><i></i></button>`).join("");
+$$("#segs button").forEach((b,i) => b.onclick = () => heroGo(i));
+$$("#screen .slide button").forEach(b => b.onclick = () => goTo(b.dataset.p));
+$("#scapT").onclick = () => goTo(HERO[hs][0][1]);
+$("#hPrev").onclick = () => heroGo(hs - 1);
+$("#hNext").onclick = () => heroGo(hs + 1);
+$("#screen").onmouseenter = () => { hover = true; clearTimeout(htimer); heroBar(false); };
+$("#screen").onmouseleave = () => { hover = false; heroGo(hs); };
+function heroCap(){ $("#scapT").textContent = [...new Set(HERO[hs].map(([,id]) => pName(id)))].join(" · ") + " →"; $("#scapN").textContent = `${pad(hs+1)} / ${pad(HERO.length)}`; }
+function heroBar(run, dur){
+  $$("#segs button").forEach((b,k) => { const f = $("i",b);
+    b.classList.toggle("done", k < hs); b.classList.toggle("on", k === hs); b.classList.toggle("hold", k === hs && !run);
+    f.classList.remove("run"); if(k === hs && run){ f.style.setProperty("--dur", dur/1000 + "s"); void f.offsetWidth; f.classList.add("run"); } });
+}
+/* два слоя подсветки меняются плавным перекрытием; у слайда с видео берётся кадр того же проекта */
+const ambs = $$(".amb"); let ambI = 0, ambSrc = "";
+function heroAmb(){
+  const f = HERO[hs][0][0], src = `assets/${f.endsWith(".mp4") ? "best/2a" : f}_t.jpg`;
+  if(src === ambSrc) return; ambSrc = src; ambI ^= 1;
+  ambs[ambI].style.backgroundImage = `url(${src})`; ambs[ambI].classList.add("on"); ambs[ambI ^ 1].classList.remove("on");
+}
+function heroGo(i){
+  hs = (i + HERO.length) % HERO.length;
+  const slides = $$("#screen .slide");
+  slides.forEach((s,k) => {
+    s.classList.toggle("on", k === hs);
+    $$("video", s).forEach(v => {
+      if((k === hs || k === (hs+1) % HERO.length) && !v.src){ v.src = v.dataset.src; v.preload = "auto"; }
+      k === hs ? v.play().catch(()=>{}) : v.pause();
+    });
+  });
+  heroCap(); heroAmb();
+  const dur = $("video", slides[hs]) ? 8000 : 5000;
+  clearTimeout(htimer);
+  if(hover || matchMedia("(prefers-reduced-motion:reduce)").matches){ heroBar(false); return; }
+  heroBar(true, dur);
+  htimer = setTimeout(() => heroGo(document.hidden || cp >= 0 ? hs : hs + 1), dur);
+}
+
+/* ====== PROJECTS GRID ====== */
+const grid = $("#grid");
+grid.innerHTML = PROJECTS.map((p,i) => { const c = [].concat(p.cover);
+  return `<button class="pc${i<BIG?" big":""}" data-p="${i}"><div class="pc-img${c.length>1?" multi":""}">${c.map(n => `<img loading="lazy" src="assets/${p.id}/${n}${c.length>1||(i>=BIG&&i<5)?"_t":""}.jpg" alt="${typeof p.title==="string"?p.title:p.title.en} game UI">`).join("")}</div><div class="pc-b"><span class="pc-t"></span><span class="pc-s"></span></div></button>`; }).join("");
+$$(".pc", grid).forEach(b => b.onclick = () => openP(+b.dataset.p));
+/* стрелки клавиатуры переводят фокус между карточками, как в игровом меню */
+grid.addEventListener("keydown", e => { const c = $$(".pc", grid), i = c.indexOf(document.activeElement); if(i < 0) return;
+  const d = {ArrowRight:1, ArrowDown:1, ArrowLeft:-1, ArrowUp:-1}[e.key]; if(!d) return; e.preventDefault(); c[(i + d + c.length) % c.length].focus(); });
+
+/* ====== STAMP EDGE (перфорация как у логотипа) ====== */
+(function(){ let c = ""; for(let i=0;i<9;i++){ const p = 5.55 + 11.1*i; c += `<circle cx='${p}' cy='0' r='3.4'/><circle cx='${p}' cy='100' r='3.4'/><circle cx='0' cy='${p}' r='3.4'/><circle cx='100' cy='${p}' r='3.4'/>`; }
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'><defs><mask id='m'><rect width='100' height='100' fill='white'/><g fill='black'>${c}</g></mask></defs><rect width='100' height='100' mask='url(#m)'/></svg>`;
+  const url = `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+  $$(".stamp").forEach(s => { s.style.webkitMaskImage = url; s.style.maskImage = url; s.style.webkitMaskSize = s.style.maskSize = "100% 100%"; });
+})();
+
+/* ====== BEST SINGLE SCREENS ====== */
+const bestHtml = a => a.map(([n,c]) => `<div><button class="shot" data-src="assets/shots/${n}.jpg"><img loading="lazy" src="assets/shots/${n}_t.jpg" alt="${CAPS[c].en} game UI"></button><div class="cap"></div></div>`).join("");
+$("#bestL").innerHTML = bestHtml(BEST_L); $("#bestP").innerHTML = bestHtml(BEST_P);
+$$("#shots .shot").forEach((el,i,arr) => el.onclick = () => openLB(arr, i, pName("shots")));
+
+/* ====== PROJECT PAGE ====== */
+const page = $("#page");
+/* у проекта свой адрес (#tanks): им можно поделиться, а «Назад» в браузере закрывает проект */
+let pushed = false;
+function openP(i, keep, fromUrl){
+  const wasOpen = cp >= 0;
+  cp = (i + PROJECTS.length) % PROJECTS.length; const p = PROJECTS[cp];
+  if(!fromUrl && location.hash !== "#" + p.id){
+    if(wasOpen) history.replaceState(null, "", "#" + p.id); else { history.pushState(null, "", "#" + p.id); pushed = true; }
+  }
+  const isPort = k => p.o === "port";
+  const shot = k => `<button class="shot" data-src="assets/${p.id}/${k}.jpg"><img loading="lazy" src="assets/${p.id}/${k}${isPort(k)?"_t":""}.jpg" alt=""></button>`;
+  const all = Array.from({length:p.n}, (_,k) => k+1), lands = all.filter(k => !isPort(k)), ports = all.filter(isPort);
+  const vids = (p.videos||[]).map(([f,c]) => `<div><button class="shot" data-v="1" data-src="assets/${p.id}/${f}.mp4"><video muted loop playsinline autoplay preload="metadata" src="assets/${p.id}/${f}.mp4"></video></button><span class="cap">${t(c)}</span></div>`).join("");
+  $("#pBody").innerHTML = `<div class="p-head"><h2>${t(p.title)}</h2><div class="meta">${p.studio} · ${p.year} · ${t(p.plat)} · ${p.role}</div>
+      <ul>${t(p.f).map(x=>`<li>${x}</li>`).join("")}</ul>
+      ${p.steam ? `<a class="btn" target="_blank" rel="noopener" href="${p.steam}">${L==="ru"?"Игра в Steam":"View on Steam"} ↗</a>` : ""}</div>
+    <div class="feed">
+      ${vids ? `<div class="sub">Motion</div><div class="ports">${vids}</div><div class="sub">${L==="ru"?"Экраны":"Screens"}</div>` : ""}
+      ${lands.map(shot).join("")}
+      ${ports.length ? `<div class="ports${ports.length % 4 && ports.length % 3 === 0 ? " three" : ""}">${ports.map(shot).join("")}</div>` : ""}
+    </div>
+    <div class="p-end"><div><h3>${L==="ru"?"Нужен такой интерфейс?":"Need an interface like this?"}</h3><p>${L==="ru"?"Быстрее всего отвечаю в Telegram.":"Telegram is the fastest way to reach me."}</p></div>
+      <div class="links"><a class="btn" target="_blank" rel="noopener" href="https://t.me/leecrit">Telegram @leecrit ↗</a><button class="btn ghost" id="pNext2">${L==="ru"?"Следующий проект":"Next project"} →</button></div></div>`;
+  $("#pNext2").onclick = () => openP(cp+1);
+  $$(".shot", page).forEach((el,k,arr) => el.onclick = () => openLB(arr, k, t(p.title)));
+  page.classList.add("open"); document.body.style.overflow = "hidden"; if(!keep) page.scrollTop = 0;
+  $$("#screen video").forEach(v => v.pause());
+}
+function closeP(fromUrl){ page.classList.remove("open"); $("#pBody").innerHTML = ""; document.body.style.overflow = ""; cp = -1; heroGo(hs);
+  if(fromUrl === true) return;
+  if(pushed){ pushed = false; history.back(); } else history.replaceState(null, "", location.pathname + location.search); }
+function route(){ const i = pIdx(location.hash.slice(1)); if(i >= 0){ if(i !== cp) openP(i, false, true); } else if(cp >= 0){ pushed = false; closeP(true); } }
+addEventListener("popstate", route);
+$("#pBack").onclick = () => closeP(); $("#pPrev").onclick = () => openP(cp-1); $("#pNext").onclick = () => openP(cp+1);
+
+/* ====== LIGHTBOX ====== */
+const lb = $("#lb"), lbm = $("#lbm"), lbi = $("#lbi"); let set = [], cur = 0, ttl = "";
+function show(){ const el = set[cur];
+  lbm.innerHTML = el.dataset.v ? `<video src="${el.dataset.src}" autoplay loop controls playsinline></video>` : `<img src="${el.dataset.src}" alt="">`;
+  lbi.textContent = `${ttl} · ${cur+1} / ${set.length}`; }
+function openLB(arr, i, title){ set = arr; cur = i; ttl = title; show(); lb.classList.add("open"); }
+function closeLB(){ lb.classList.remove("open"); lbm.innerHTML = ""; }
+const step = d => { cur = (cur + d + set.length) % set.length; show(); };
+$(".x",lb).onclick = closeLB; $(".p",lb).onclick = () => step(-1); $(".n",lb).onclick = () => step(1);
+lb.onclick = e => { if(e.target === lb || e.target === lbm) closeLB(); };
+addEventListener("keydown", e => {
+  if(lb.classList.contains("open")){ if(e.key==="Escape") closeLB(); if(e.key==="ArrowLeft") step(-1); if(e.key==="ArrowRight") step(1); }
+  else if(cp >= 0){ if(e.key==="Escape") closeP(); if(e.key==="ArrowLeft") openP(cp-1); if(e.key==="ArrowRight") openP(cp+1); }
+});
+
+/* ====== NAV ====== */
+$("#yr").textContent = new Date().getFullYear();
+const links = $$(".menu a.l"), nio = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting) links.forEach(a => a.classList.toggle("on", a.getAttribute("href") === "#"+e.target.id)); }), {rootMargin:"-45% 0px -50% 0px"});
+["home","work","shots","exp","about","contact"].forEach(id => nio.observe(document.getElementById(id)));
+
+/* ====== SPOT: точки вокруг курсора (только мышь) ====== */
+(function(){ const s = $("#spot"); let x = 0, y = 0, q = false;
+  addEventListener("pointermove", e => { if(e.pointerType !== "mouse") return; x = e.clientX; y = e.clientY;
+    if(q) return; q = true; requestAnimationFrame(() => { q = false; s.style.setProperty("--mx", x + "px"); s.style.setProperty("--my", y + "px"); s.classList.add("on"); }); }, {passive:true});
+  document.documentElement.addEventListener("mouseleave", () => s.classList.remove("on"));
+})();
+
+/* ====== EMBERS: только в верхнем блоке, останавливаются вне экрана ====== */
+(function(){
+  if(matchMedia("(prefers-reduced-motion:reduce)").matches) return;
+  const c = $("#embers"), x = c.getContext("2d"), host = $("#home"); let W, H, P = [], run = false;
+  const sp = document.createElement("canvas"); sp.width = sp.height = 32;
+  const g = sp.getContext("2d"), gr = g.createRadialGradient(16,16,0,16,16,16);
+  gr.addColorStop(0,"rgba(255,225,120,1)"); gr.addColorStop(.25,"rgba(255,170,40,.7)"); gr.addColorStop(1,"rgba(255,60,0,0)");
+  g.fillStyle = gr; g.fillRect(0,0,32,32);
+  const mk = init => ({x:Math.random()*W, y:init ? Math.random()*H : H+10, s:Math.random()*8+3, vx:Math.random()*.3+.05, vy:-(Math.random()*.22+.06), a:Math.random()*.5+.15, ph:Math.random()*6.28});
+  function size(){ W = c.width = host.clientWidth; H = c.height = host.clientHeight; P = Array.from({length:Math.min(40,Math.round(W/36))}, () => mk(true)); }
+  function draw(){
+    if(!run) return; x.clearRect(0,0,W,H);
+    for(const p of P){ p.x += p.vx + Math.sin(p.ph)*.12; p.y += p.vy; p.ph += .012;
+      if(p.y < -12 || p.x > W+12) Object.assign(p, mk(false));
+      x.globalAlpha = p.a * (.6 + .4*Math.sin(p.ph*2.5)); x.drawImage(sp, p.x, p.y, p.s, p.s); }
+    requestAnimationFrame(draw);
+  }
+  new IntersectionObserver(es => { const v = es[0].isIntersecting; if(v && !run){ run = true; draw(); } else if(!v) run = false; }).observe(host);
+  addEventListener("resize", size); size();
+})();
+
+render();
+heroGo(0);
+route();
+</script>
+</body>
+</html>

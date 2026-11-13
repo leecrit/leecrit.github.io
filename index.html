@@ -54,6 +54,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
 /* hero: компактная строка «кто я» и крупный экран с работами */
 /* фон без картинок: тлеющее свечение снизу, рисуется градиентами */
 .hero{position:relative;z-index:1;margin-top:64px;overflow:hidden;background:
+  radial-gradient(ellipse 42% 22% at 50% 80%,rgba(255,80,20,.24),transparent 70%),
   radial-gradient(ellipse 55% 50% at 50% 56%,rgba(150,24,34,.38),transparent 72%)}
 main,.end{position:relative;z-index:1}
 /* точки проявляются вокруг курсора по всему сайту; лежат под контентом */
@@ -89,7 +90,7 @@ h1{font-family:var(--fh);font-size:calc(clamp(24px,3vw,40px)*var(--hk));font-wei
 .harr:hover{background:var(--yellow);color:#1a0d00}
 .harr svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:square}
 .harr.l{left:-64px}.harr.r{right:-64px}
-.screen{position:relative;aspect-ratio:16/9;background:#0b0708;overflow:hidden;box-shadow:0 30px 60px rgba(0,0,0,.45)}
+.screen{position:relative;aspect-ratio:16/9;background:#0b0708;overflow:hidden;box-shadow:0 30px 60px rgba(0,0,0,.45),0 46px 110px -24px rgba(255,80,20,.42)}
 .slide{position:absolute;inset:0;display:flex;gap:10px;justify-content:center;align-items:center;opacity:0;transform:scale(1.02);transition:opacity .9s ease,transform 5.5s ease-out;pointer-events:none}
 .slide.multi{padding:14px}
 .slide.on{opacity:1;transform:none;pointer-events:auto}
@@ -102,7 +103,8 @@ h1{font-family:var(--fh);font-size:calc(clamp(24px,3vw,40px)*var(--hk));font-wei
 .segs button::before,.segs i{content:"";position:absolute;left:0;top:7px;height:4px}
 .segs button::before{right:0;background:rgba(236,229,221,.2);transition:background .2s}
 .segs button:hover::before{background:rgba(236,229,221,.4)}
-.segs i{width:0;background:var(--yellow)}
+/* transition:none обязателен: без него начатая заливка продолжает ползти у уже пройденных сегментов */
+.segs i{width:0;background:var(--yellow);transition:none}
 .segs .done i{width:100%}
 .segs .on i.run{width:100%;transition:width var(--dur,5s) linear}
 .segs .on.hold i{width:100%}

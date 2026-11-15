@@ -541,7 +541,7 @@ function openP(i, keep, fromUrl){
   const isPort = k => p.o === "port";
   const shot = k => `<button class="shot" data-src="assets/${p.id}/${k}.jpg"><img loading="lazy" src="assets/${p.id}/${k}${isPort(k)?"_t":""}.jpg" alt=""></button>`;
   const all = Array.from({length:p.n}, (_,k) => k+1), lands = all.filter(k => !isPort(k)), ports = all.filter(isPort);
-  const iv = p.intro, intro = iv ? `<div class="sub">${L==="ru"?"В движке":"In engine"}</div>${shot(iv.img)}<div><button class="shot" data-v="1" data-src="assets/${p.id}/${iv.vid}.webm"><video muted loop playsinline autoplay preload="metadata"><source src="assets/${p.id}/${iv.vid}.webm" type="video/webm"><source src="assets/${p.id}/${iv.vid}.mp4" type="video/mp4"></video></button><span class="cap">${t(iv.cap)}</span></div><div class="sub">${L==="ru"?"Экраны":"Screens"}</div>` : "";
+  const iv = p.intro, intro = iv ? `${shot(iv.img)}<div><button class="shot" data-v="1" data-src="assets/${p.id}/${iv.vid}.webm"><video muted loop playsinline autoplay preload="metadata"><source src="assets/${p.id}/${iv.vid}.webm" type="video/webm"><source src="assets/${p.id}/${iv.vid}.mp4" type="video/mp4"></video></button><span class="cap">${t(iv.cap)}</span></div><div class="sub">${L==="ru"?"Экраны":"Screens"}</div>` : "";
   const vids = (p.videos||[]).map(([f,c]) => `<div><button class="shot" data-v="1" data-src="assets/${p.id}/${f}.mp4"><video muted loop playsinline autoplay preload="metadata" src="assets/${p.id}/${f}.mp4"></video></button><span class="cap">${t(c)}</span></div>`).join("");
   $("#pBody").innerHTML = `<div class="p-head"><h2>${t(p.title)}</h2><div class="meta">${p.studio} · ${p.year} · ${t(p.plat)} · ${p.role}</div>
       <ul>${t(p.f).map(x=>`<li>${x}</li>`).join("")}</ul>

@@ -350,6 +350,7 @@ const HERO = [
   [["best/1g","shots"]],
   [["best/1c","hellstrike"]],
   [["best/1b","iba"],["best/2b","shots"],["best/3b","shots"]],
+  [["hoosegow/engine.webm","hoosegow"]],
   [["best/1a","tanks"],["best/2a","tanks"],["best/3a","tanks"]],
   [["tanks/general.mp4","tanks"],["tanks/chest.mp4","tanks"],["tanks/coin.mp4","tanks"]],
   [["best/roguelike","shots"]],
@@ -463,7 +464,11 @@ $$(".lang button").forEach(b => b.onclick = () => { L = b.dataset.l; try{localSt
 
 /* ====== HERO SCREEN ====== */
 let htimer, hover = false;
-const item = (f, multi) => f.endsWith(".mp4")
+/* .webm: горизонтальное видео на весь слайд; браузеру без WebM отдаём .mp4 с тем же именем */
+const webm = document.createElement("video").canPlayType("video/webm") !== "";
+const item = (f, multi) => f.endsWith(".webm")
+  ? `<video muted loop playsinline preload="none" width="1116" height="628" data-src="assets/${webm ? f : f.replace(/\.webm$/, ".mp4")}"></video>`
+  : f.endsWith(".mp4")
   ? `<video muted loop playsinline preload="none" width="800" height="1422" data-src="assets/${f}"></video>`
   : `<img src="assets/${f}${multi?"_t":""}.jpg" alt="" draggable="false">`;
 $("#screen").innerHTML = HERO.map(s => `<div class="slide${s.length>1?" multi":""}">${s.map(([f,id]) => `<button data-p="${id}">${item(f, s.length>1)}</button>`).join("")}</div>`).join("");
@@ -484,7 +489,7 @@ function heroBar(run, dur){
 /* два слоя подсветки меняются плавным перекрытием; у слайда с видео берётся кадр того же проекта */
 const ambs = $$(".amb"); let ambI = 0, ambSrc = "";
 function heroAmb(){
-  const f = HERO[hs][0][0], src = `assets/${f.endsWith(".mp4") ? "best/2a" : f}_t.jpg`;
+  const f = HERO[hs][0][0], src = `assets/${f.endsWith(".webm") ? f.replace(/[^/]+\.webm$/, "menu") : f.endsWith(".mp4") ? "best/2a" : f}_t.jpg`;
   if(src === ambSrc) return; ambSrc = src; ambI ^= 1;
   ambs[ambI].style.backgroundImage = `url(${src})`; ambs[ambI].classList.add("on"); ambs[ambI ^ 1].classList.remove("on");
 }
@@ -499,7 +504,7 @@ function heroGo(i){
     });
   });
   heroCap(); heroAmb();
-  const dur = $("video", slides[hs]) ? 8000 : 5000;
+  const dur = HERO[hs][0][0].endsWith(".webm") ? 15000 : $("video", slides[hs]) ? 8000 : 5000;
   clearTimeout(htimer);
   if(hover || matchMedia("(prefers-reduced-motion:reduce)").matches){ heroBar(false); return; }
   heroBar(true, dur);

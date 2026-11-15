@@ -367,6 +367,7 @@ const PROJECTS = [
   f:{ru:["Интерфейс sci-fi мобильного шутера с нуля","Боевой HUD, карта миссии, лобби, арсенал, настройки","Визуальный стиль, ассеты и контроль их внедрения в Unity"],
      en:["Sci-fi mobile shooter interface from scratch","Combat HUD, mission map, lobby, armory, settings","Visual style, assets and supervision of their integration in Unity"]}},
  {id:"hoosegow", n:6, o:"land", cover:4, steam:"https://store.steampowered.com/app/4060640/Hoosegow_Prison_Survival/", title:"Hoosegow: Prison Survival", studio:"D.Dream Games", year:"2025 — 2026", plat:{ru:"PC · консоли",en:"PC · Console"}, role:"UX/UI Designer",
+  intro:{img:"menu", vid:"engine", cap:{ru:"Главное меню и выбор режима в Unity",en:"Main menu and mode select in Unity"}},
   f:{ru:["Переработал около 20 экранов мобильного интерфейса под Desktop и консоли","UX и навигация под геймпад и клавиатуру с мышью","UI-ассеты (25+ иконок) и макеты для интеграции в движок"],
      en:["Reworked about 20 screens of the mobile interface for Desktop and console","UX and navigation for gamepad and keyboard/mouse","UI assets (25+ icons) and layouts for engine integration"]}},
  {id:"card-world", n:8, o:"land", cover:1, title:"Card World", studio:"GAN Studio", year:"2023 — 2024", plat:"Mobile", role:"UI/UX Designer",
@@ -540,11 +541,13 @@ function openP(i, keep, fromUrl){
   const isPort = k => p.o === "port";
   const shot = k => `<button class="shot" data-src="assets/${p.id}/${k}.jpg"><img loading="lazy" src="assets/${p.id}/${k}${isPort(k)?"_t":""}.jpg" alt=""></button>`;
   const all = Array.from({length:p.n}, (_,k) => k+1), lands = all.filter(k => !isPort(k)), ports = all.filter(isPort);
+  const iv = p.intro, intro = iv ? `<div class="sub">${L==="ru"?"В движке":"In engine"}</div>${shot(iv.img)}<div><button class="shot" data-v="1" data-src="assets/${p.id}/${iv.vid}.webm"><video muted loop playsinline autoplay preload="metadata"><source src="assets/${p.id}/${iv.vid}.webm" type="video/webm"><source src="assets/${p.id}/${iv.vid}.mp4" type="video/mp4"></video></button><span class="cap">${t(iv.cap)}</span></div><div class="sub">${L==="ru"?"Экраны":"Screens"}</div>` : "";
   const vids = (p.videos||[]).map(([f,c]) => `<div><button class="shot" data-v="1" data-src="assets/${p.id}/${f}.mp4"><video muted loop playsinline autoplay preload="metadata" src="assets/${p.id}/${f}.mp4"></video></button><span class="cap">${t(c)}</span></div>`).join("");
   $("#pBody").innerHTML = `<div class="p-head"><h2>${t(p.title)}</h2><div class="meta">${p.studio} · ${p.year} · ${t(p.plat)} · ${p.role}</div>
       <ul>${t(p.f).map(x=>`<li>${x}</li>`).join("")}</ul>
       ${p.steam ? `<a class="btn" target="_blank" rel="noopener" href="${p.steam}">${L==="ru"?"Игра в Steam":"View on Steam"} ↗</a>` : ""}</div>
     <div class="feed">
+      ${intro}
       ${vids ? `<div class="sub">Motion</div><div class="ports">${vids}</div><div class="sub">${L==="ru"?"Экраны":"Screens"}</div>` : ""}
       ${lands.map(shot).join("")}
       ${ports.length ? `<div class="ports${ports.length % 4 && ports.length % 3 === 0 ? " three" : ""}">${ports.map(shot).join("")}</div>` : ""}

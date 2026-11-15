@@ -280,7 +280,7 @@ footer{padding:26px 0 40px;color:var(--dim);font-size:13px}
 
 <main>
 <section id="work"><div class="wrap">
-  <div class="shead rv"><h2 data-ru="Проекты" data-en="Projects"></h2><small>2023 — 2026</small></div>
+  <div class="shead rv"><h2 data-ru="Проекты" data-en="Projects"></h2></div>
   <div class="grid rv" id="grid"></div>
 </div></section>
 
@@ -303,7 +303,7 @@ footer{padding:26px 0 40px;color:var(--dim);font-size:13px}
       <ul id="aboutL"></ul>
     </div>
     <div class="rv" style="--d:.1s">
-      <div class="blk"><div class="lbl" data-ru="Инструменты" data-en="Tools"></div><div class="chips"><span class="chip">Figma</span><span class="chip">Adobe Photoshop</span><span class="chip">Adobe After Effects</span><span class="chip">Claude</span></div></div>
+      <div class="blk"><div class="lbl" data-ru="Инструменты" data-en="Tools"></div><div class="chips"><span class="chip">Figma</span><span class="chip">Adobe Photoshop</span><span class="chip">Adobe After Effects</span><span class="chip">Unity</span><span class="chip">Claude Code</span></div></div>
       <div class="blk"><div class="lbl" data-ru="Навыки" data-en="Skills"></div><div class="chips" id="skills"></div></div>
       <div class="blk"><div class="lbl" data-ru="Коротко" data-en="Quick facts"></div>
         <dl class="kv">
@@ -397,8 +397,8 @@ const BEST_P = [[8,"popup"],[9,"win"],[3,"hud"],[14,"tg"]];
 const XP = [
  {co:"Overmobile", role:"UI/UX Designer", d:{ru:"Мар 2026 — Ноя 2026",en:"Mar 2026 — Nov 2026"},
   ctx:{ru:"Веб- и мобильно ориентированный военный гибрид-автобаттлер. Удалённо.",en:"Web- and mobile-oriented military auto-battler hybrid. Remote."},
-  ru:["Один отвечал за весь арт, UI и UX в команде около 8 человек (4 геймдизайнера, 4 разработчика)","Выстроил AI-пайплайн на Claude Code: нейросети для генерации изображений, Figma, прототип, ревью, импорт в игру","За 8 месяцев: около 20 экранов и досок (база и добыча ресурсов, достижения, альбомы операций, трофеи), 100+ состояний, 60+ иконок, около 20 UI-анимаций"],
-  en:["Sole owner of all art, UI and UX in a team of about 8 (4 game designers, 4 developers)","Built an AI pipeline on Claude Code: AI image generation models, Figma, prototype, review, in-game import","Over 8 months: about 20 screens and boards (base and resource gathering, achievements, operation albums, trophies), 100+ states, 60+ icons, about 20 UI animations"]},
+  ru:["Один отвечал за весь арт, UI и UX в команде около 8 человек (4 геймдизайнера, 4 разработчика)","Выстроил AI-пайплайн на Claude Code: нейросети для генерации изображений, Figma, прототип, ревью, импорт в игру","За 8 месяцев: около 20 экранов и досок (база и добыча ресурсов, достижения, альбомы операций, трофеи; LiveOps: события, офферы, окна наград), 100+ состояний, 60+ иконок, около 20 UI-анимаций"],
+  en:["Sole owner of all art, UI and UX in a team of about 8 (4 game designers, 4 developers)","Built an AI pipeline on Claude Code: AI image generation models, Figma, prototype, review, in-game import","Over 8 months: about 20 screens and boards (base and resource gathering, achievements, operation albums, trophies; LiveOps: events, offers, reward windows), 100+ states, 60+ icons, about 20 UI animations"]},
  {co:"D.Dream Games", role:"UX/UI Designer", d:{ru:"Сен 2025 — Янв 2026",en:"Sep 2025 — Jan 2026"},
   ctx:{ru:"Hoosegow: Prison Survival, вышла в Steam (PC, консоли). Удалённо.",en:"Hoosegow: Prison Survival, released on Steam (PC, console). Remote."},
   ru:["Один отвечал за интерфейс в команде из двух человек (вместе с геймдизайнером)","Переработал около 20 экранов под Desktop и консоли, со множеством состояний, и спроектировал интерфейсы под новые механики","Спроектировал UX и навигацию под геймпад и клавиатуру с мышью","Доработал общий визуальный стиль, подготовил UI-ассеты (25+ иконок) и макеты для интеграции в движок"],
@@ -424,10 +424,10 @@ const XP = [
   en:["Drew windows, icons and buttons for casual games under the project lead; some of my solutions shipped in releases after rework"]}
 ];
 const ABOUT = {
-  ru:["Закрываю весь пайплайн разработки интерфейса: от обсуждения и UX до стиля, иконок, анимаций и внедрения в игру","Выстроил AI-пайплайн интерфейсов на Claude Code и нейросетях для генерации изображений: от задачи до прототипа в Figma или Unity","Использую нейросети для концептов, иконок, рендеров и прототипов; арт-задачи закрываю сам"],
-  en:["Cover the full interface development pipeline: from discussion and UX to visual style, icons, animation and in-game integration","Built an AI-assisted interface pipeline on Claude Code and AI image generation models: from a task to a prototype in Figma or Unity","Using neural networks for concepts, icons, renders and prototypes; closing interface art tasks on my own"]};
-const SKILLS = {ru:["Игровые интерфейсы","HUD","Иконки","Визуальный стиль","UI-кит","Прототипы","Навигация под геймпад","Адаптация под платформы","UI-анимация","LiveOps: события, офферы, окна наград"],
-                en:["Game interfaces","HUD","Icons","Visual style","UI kit","Prototyping","Gamepad navigation","Cross-platform adaptation","UI animation","LiveOps: events, offers, reward windows"]};
+  ru:["10+ проектов: 130+ экранов, 250+ иконок, около 25 UI-анимаций; Mobile, PC и консоли","Закрываю весь пайплайн разработки интерфейса: от обсуждения и UX до стиля, иконок, анимаций и внедрения в игру","Выстроил AI-пайплайн интерфейсов на Claude Code и нейросетях для генерации изображений: концепты, иконки, рендеры и прототипы в Figma или Unity; арт-задачи закрываю сам"],
+  en:["10+ projects: 130+ screens, 250+ icons, about 25 UI animations; Mobile, PC and console","Cover the full interface development pipeline: from discussion and UX to visual style, icons, animation and in-game integration","Built an AI-assisted interface pipeline on Claude Code and AI image generation models: concepts, icons, renders and prototypes in Figma or Unity; closing interface art tasks on my own"]};
+const SKILLS = {ru:["Игровые интерфейсы","HUD","Иконки","Визуальный стиль","UI-кит","Прототипы","Навигация под геймпад","Адаптация под платформы","UI-анимация","Мета и новые режимы игры"],
+                en:["Game interfaces","HUD","Icons","Visual style","UI kit","Prototyping","Gamepad navigation","Cross-platform adaptation","UI animation","Meta and new game modes"]};
 
 /* ====== HELPERS ====== */
 let L = "ru";

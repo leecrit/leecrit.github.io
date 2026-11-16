@@ -623,5 +623,13 @@ render();
 heroGo(0);
 route();
 </script>
+<!-- Счётчик просмотров GoatCounter (без cookie). Проекты открываются через #, поэтому считаем путь вместе с hash -->
+<script>
+  window.goatcounter = { path: function () { return location.pathname + location.hash; } };
+  window.addEventListener("hashchange", function () {
+    if (window.goatcounter.count) window.goatcounter.count({ path: location.pathname + location.hash });
+  });
+</script>
+<script data-goatcounter="https://leecrit.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
 </body>
 </html>
